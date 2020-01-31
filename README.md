@@ -1,3 +1,3 @@
-# KodTakovaUnited
+# Robpair
 
 Unity project for Sofia Game Jam 2020
