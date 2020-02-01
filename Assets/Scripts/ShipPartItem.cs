@@ -6,8 +6,9 @@ public class ShipPartItem : LootableItem
 {
     public ShipPartType shipPartType;
 
-    public ShipPartItem()
+    private void Start()
     {
         ItemType = LootType.ShipPart;
+        sprite = Resources.Load<Sprite>("ShipParts/" + (int)shipPartType);
     }
 }

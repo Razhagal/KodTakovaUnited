@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using System;
 
 public enum RobotPartType
 {
@@ -15,7 +16,14 @@ public enum RobotPartType
 
 public enum ShipPartType
 {
-    Tire,
+    Item_1 = 1,
+    Item_2 = 2,
+    Item_3 = 3,
+    Item_4 = 4,
+    Item_5 = 5,
+    Item_6 = 6,
+    Item_7 = 7,
+    Item_8 = 8,
 }
 
 public class PlayerState
@@ -27,7 +35,7 @@ public class PlayerState
     public ReactiveProperty<int> energy = new ReactiveProperty<int>();
 
     public ReactiveProperty<bool> canCarryItems = new ReactiveProperty<bool>();
-    public ReactiveProperty<LootableItem> carriedItem = new ReactiveProperty<LootableItem>();
+    public ReactiveProperty<ShipItemData> carriedItem = new ReactiveProperty<ShipItemData>();
 
     public ReactiveDictionary<RobotPartType, bool> parts = new ReactiveDictionary<RobotPartType, bool>();
 
@@ -51,16 +59,36 @@ public class PlayerState
     {
         parts[robotPartItem.type] = true;
 
+        Debug.Log("Picked Item : " + Enum.GetName(typeof(RobotPartType), robotPartItem.type));
+
+        if (parts[RobotPartType.LeftHand] && parts[RobotPartType.RightHand])
+        {
+            canCarryItems.Value = true;
+        }
+        else
+        {
+            canCarryItems.Value = false;
+        }
+
         return true;
     }
 
     public bool CarryItem(ShipPartItem shipPartItem)
     {
-        if (canCarryItems.Value)
+        if (canCarryItems.Value && carriedItem.Value == null)
         {
-            carriedItem.Value = shipPartItem;
-        }
+            ShipItemData shipItemData = new ShipItemData(shipPartItem.shipPartType);
+            shipItemData.lootTypes = shipPartItem.ItemType;
+            shipItemData.sprite = shipPartItem.sprite;
 
-        return true;
+            carriedItem.Value = shipItemData;
+            Debug.Log("Picked ship Item : " + Enum.GetName(typeof(ShipPartType), shipPartItem.shipPartType));
+            return true;
+        }
+        else
+        {
+            Debug.Log("Cannot pick up item");
+            return false;
+        }
     }
 }

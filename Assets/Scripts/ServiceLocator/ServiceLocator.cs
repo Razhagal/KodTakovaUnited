@@ -45,6 +45,7 @@ public class ServiceLocator
         //container.Add<TranslationsManager>(new TranslationsManager());
 
         container.Add<PlayerState>(new PlayerState());
+        container.Add<ShipState>(new ShipState());
     }
 
     public void Start()

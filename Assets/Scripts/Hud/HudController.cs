@@ -47,6 +47,23 @@ public class HudController : MonoBehaviour
                 itemContainer.gameObject.SetActive(value);
             })
             .AddTo(this);
+
+        playerState.carriedItem
+            .Subscribe(newItem =>
+            {
+                if (newItem == null)
+                {
+                    item.gameObject.SetActive(false);
+                    return;
+                }
+                else
+                {
+                    item.gameObject.SetActive(true);
+                    item.sprite = newItem.sprite;
+                    item.SetNativeSize();
+                }
+            })
+            .AddTo(this);
     }
 
     private void UpdateHP(int oldValue, int newValue)

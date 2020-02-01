@@ -72,14 +72,14 @@ public class PlayerController : MonoBehaviour
 
             if (playerState != null)
             {
-                if (lootable.ItemType == LootableItem.LootType.RobotPart)
+                if (lootable.ItemType == LootType.RobotPart)
                 {
                     if (playerState.ReceivePart(lootable as RobotPartItem))
                     {
                         Destroy(collision.gameObject);
                     }
                 }
-                else if (lootable.ItemType == LootableItem.LootType.ShipPart)
+                else if (lootable.ItemType == LootType.ShipPart)
                 {
                     if (playerState.CarryItem(lootable as ShipPartItem))
                     {

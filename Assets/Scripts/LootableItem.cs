@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum LootType
+{
+    ShipPart,
+    RobotPart,
+    EnergyItem
+}
 
 public class LootableItem : MonoBehaviour
 {
-    public enum LootType
-    {
-        ShipPart,
-        RobotPart,
-        EnergyItem
-    }
-
+    [HideInInspector]
+    public Sprite sprite;
     public LootType ItemType;
 }

@@ -6,7 +6,7 @@ public class RobotPartItem : LootableItem
 {
     public RobotPartType type;
 
-    public RobotPartItem()
+    private void Start()
     {
         ItemType = LootType.RobotPart;
     }
