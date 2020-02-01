@@ -13,9 +13,12 @@ public class PlayerController : MonoBehaviour
     private Vector2 movement;
     private Vector2 newPos;
 
+    private PlayerState playerState;
+
     private void Start()
     {
         rBody = GetComponent<Rigidbody2D>();
+        playerState = ServiceLocator.Instance.GetInstanceOfType<PlayerState>();
     }
 
     private void FixedUpdate()
@@ -66,6 +69,25 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag.Equals("Lootable"))
         {
             LootableItem lootable = collision.gameObject.GetComponent<LootableItem>();
+
+            if (playerState != null)
+            {
+                if (lootable.ItemType == LootableItem.LootType.RobotPart)
+                {
+                    if (playerState.ReceivePart(lootable as RobotPartItem))
+                    {
+                        Destroy(collision.gameObject);
+                    }
+                }
+                else if (lootable.ItemType == LootableItem.LootType.ShipPart)
+                {
+                    if (playerState.CarryItem(lootable as ShipPartItem))
+                    {
+                        Destroy(collision.gameObject);
+                    }
+                }
+            }
+
             Debug.Log(lootable.ItemType);
         }
     }
