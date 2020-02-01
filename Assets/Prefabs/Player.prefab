@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 1
+  anim: {fileID: 6641437414512773882}
 --- !u!1 &4585341559567315627
 GameObject:
   m_ObjectHideFlags: 0

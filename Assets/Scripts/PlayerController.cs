@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     public float MoveSpeed = 1;
 
+    public Animator anim;
+
     private Rigidbody2D rBody;
     private Vector2 inputVector;
     private Vector2 movement;
@@ -29,8 +31,33 @@ public class PlayerController : MonoBehaviour
         Vector2 currPos = rBody.position;
         newPos = currPos + movement * Time.fixedDeltaTime;
 
-
+        SetDirection(inputVector);
+        UpdateAnimation(inputVector);
         rBody.MovePosition(newPos);
+    }
+
+    private void SetDirection(Vector2 dir)
+    {
+        if (dir.x <= 0)
+        {
+            transform.localScale = new Vector2(1f, transform.localScale.y);
+        }
+        else
+        {
+            transform.localScale = new Vector2(-1f, transform.localScale.y);
+        }
+    }
+
+    private void UpdateAnimation(Vector2 dir)
+    {
+        if (dir.x != 0)
+        {
+            anim.SetBool("IsMoving", true);
+        }
+        else
+        {
+            anim.SetBool("IsMoving", false);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
