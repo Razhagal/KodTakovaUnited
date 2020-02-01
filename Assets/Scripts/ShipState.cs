@@ -8,8 +8,14 @@ public class ShipState
     public ReactiveProperty<int> expectedParts = new ReactiveProperty<int>();
     public ReactiveProperty<int> receivedParts = new ReactiveProperty<int>();
 
-    public void ReceiveItem(ShipPartType shipPartType)
+    public ShipState()
+    {
+        expectedParts.Value = 3;
+    }
+
+    public bool ReceiveItem(ShipItemData shipItemData)
     {
         receivedParts.Value++;
+        return true;
     }
 }

@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     {
         rBody = GetComponent<Rigidbody2D>();
         playerState = ServiceLocator.Instance.GetInstanceOfType<PlayerState>();
-        completenesIndex = PlayerCompletenesState.TwoLegsTwoArms;
+        //completenesIndex = PlayerCompletenesState.TwoLegsTwoArms;
 
         for (int i = 0; i < completedStateObjects.Length; i++)
         {
@@ -47,6 +47,8 @@ public class PlayerController : MonoBehaviour
         completedStateObjects[(int)completenesIndex].SetActive(true);
         completedStateAnimators[(int)completenesIndex].enabled = true;
         anim = completedStateAnimators[(int)completenesIndex];
+
+        UpdateAnimation();
     }
 
     private void FixedUpdate()
@@ -128,6 +130,7 @@ public class PlayerController : MonoBehaviour
                     if (playerState.ReceivePart(lootable as RobotPartItem))
                     {
                         Destroy(collision.gameObject);
+                        UpdateAnimation();
                     }
                 }
                 else if (lootable.ItemType == LootType.ShipPart)
@@ -141,5 +144,78 @@ public class PlayerController : MonoBehaviour
 
             Debug.Log(lootable.ItemType);
         }
+
+        if (collision.gameObject.tag.Equals("Ship"))
+        {
+            if (playerState != null)
+            {
+                if (playerState.carriedItem.Value != null)
+                {
+                    if (ServiceLocator.Instance.GetInstanceOfType<ShipState>().ReceiveItem(playerState.carriedItem.Value))
+                    {
+                        playerState.carriedItem.Value = null;
+                    }
+                }
+            }
+        }
     }
+
+    private void UpdateAnimation()
+    {
+        if (completenesIndex != PlayerCompletenesState.TwoLegsTwoArms)
+        {
+            if (playerState.parts[RobotPartType.LeftHand] &&
+                playerState.parts[RobotPartType.RightHand] &&
+                playerState.parts[RobotPartType.LeftLeg] &&
+                playerState.parts[RobotPartType.RightLeg])
+            {
+                UpdatePlayerCompleteness(PlayerCompletenesState.TwoLegsTwoArms);
+            }
+            else if ((playerState.parts[RobotPartType.LeftHand] ||
+                playerState.parts[RobotPartType.RightHand]) &&
+                playerState.parts[RobotPartType.LeftLeg] &&
+                playerState.parts[RobotPartType.RightLeg])
+            {
+                UpdatePlayerCompleteness(PlayerCompletenesState.TwoLegsOneArm);
+            }
+            else if (playerState.parts[RobotPartType.LeftHand] &&
+                    playerState.parts[RobotPartType.RightHand] &&
+                    (playerState.parts[RobotPartType.LeftLeg] ||
+                    playerState.parts[RobotPartType.RightLeg]))
+            {
+                UpdatePlayerCompleteness(PlayerCompletenesState.OneLegTwoArms);
+            }
+            else if ((playerState.parts[RobotPartType.LeftHand] &&
+                    playerState.parts[RobotPartType.RightLeg]) ||
+                    (playerState.parts[RobotPartType.RightHand] &&
+                    playerState.parts[RobotPartType.LeftLeg]) ||
+                    (playerState.parts[RobotPartType.LeftHand] &&
+                    playerState.parts[RobotPartType.LeftLeg]) ||
+                    (playerState.parts[RobotPartType.RightHand] &&
+                    playerState.parts[RobotPartType.RightLeg]))
+            {
+                UpdatePlayerCompleteness(PlayerCompletenesState.OneLegOneArm);
+            }
+            else if (playerState.parts[RobotPartType.RightLeg] &&
+                     playerState.parts[RobotPartType.LeftLeg])
+            {
+                UpdatePlayerCompleteness(PlayerCompletenesState.TwoLegs);
+            }
+            else if (playerState.parts[RobotPartType.RightLeg] || playerState.parts[RobotPartType.LeftLeg])
+            {
+                UpdatePlayerCompleteness(PlayerCompletenesState.OneLeg);
+            }
+        }
+    }
+
+    /*public enum PlayerCompletenesState
+{
+    OneLeg = 0,
+    TwoLegs,
+    TwoLegsOneArm,
+    OneLegOneArm,
+    OneLegTwoArms,
+    TwoLegsTwoArms // Complete player
+}*/
 }
+ 
