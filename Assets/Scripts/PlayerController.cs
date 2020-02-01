@@ -41,11 +41,11 @@ public class PlayerController : MonoBehaviour
 
     private void SetDirection(Vector2 dir)
     {
-        if (dir.x <= 0)
+        if (dir.x < 0)
         {
             transform.localScale = new Vector2(1f, transform.localScale.y);
         }
-        else
+        else if (dir.x > 0)
         {
             transform.localScale = new Vector2(-1f, transform.localScale.y);
         }
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateAnimation(Vector2 dir)
     {
-        if (dir.x != 0)
+        if (dir.x != 0 || dir.y != 0)
         {
             anim.SetBool("IsMoving", true);
         }
