@@ -8,7 +8,7 @@ public class LootableItem : MonoBehaviour
     public enum LootType
     {
         ShipPart,
-        PlayerPart,
+        RobotPart,
         EnergyItem
     }
 
