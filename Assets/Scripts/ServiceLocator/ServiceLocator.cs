@@ -41,8 +41,10 @@ public class ServiceLocator
 
     public void Awake(Dictionary<Type, object> monobehaviours)
     {
-	    //container.Add<TicksManager>(monobehaviours[typeof(TicksManager)] as TicksManager);
-	    //container.Add<TranslationsManager>(new TranslationsManager());
+        //container.Add<TicksManager>(monobehaviours[typeof(TicksManager)] as TicksManager);
+        //container.Add<TranslationsManager>(new TranslationsManager());
+
+        container.Add<PlayerState>(new PlayerState());
     }
 
     public void Start()
