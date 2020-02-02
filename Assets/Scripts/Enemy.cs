@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void RemoveHealthPoints()
+    public void RemoveHealthPoints()
     {
         healthPoints = healthPoints - minusHealthPoints;
     }
