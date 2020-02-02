@@ -3,10 +3,15 @@
 public class Enemy : MonoBehaviour
 {
     public Animator anim;
-    public float moveSpeed;
-    public float moveRotate;
-    private Coroutine moveEnemyCourotine;
+    public int minusHealthPoints = 10;
+    [HideInInspector]
+    public int healthPoints = 100;
+    //public float moveSpeed;
+    //public float moveRotate;
+    //private Coroutine moveEnemyCourotine;
     public float range = 2f;
+    
+
 
     private Transform target = null;
     private void OnCollisionEnter2D(Collision2D collision)
@@ -27,5 +32,9 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void RemoveHealthPoints()
+    {
+        healthPoints = healthPoints - minusHealthPoints;
+    }
 
 }
