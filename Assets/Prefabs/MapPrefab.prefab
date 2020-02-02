@@ -34,7 +34,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 6491004388860863043}
-  minusHealthPoints: 10
+  hpModifier: 3
   healthPoints: 100
   enemyRigidBody: {fileID: 2023941057}
   isMovable: 1
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 5723834669244671522}
-  minusHealthPoints: 10
+  hpModifier: 1
   healthPoints: 100
   enemyRigidBody: {fileID: 2016218859}
   isMovable: 0
@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 5152433295340117361}
-  minusHealthPoints: 10
+  hpModifier: 5
   healthPoints: 100
   enemyRigidBody: {fileID: 574441780}
   isMovable: 1
@@ -130953,6 +130953,16 @@ PrefabInstance:
       propertyPath: enemyigidBody
       value: 
       objectReference: {fileID: 5980605810676624460}
+    - target: {fileID: 7432843566294229145, guid: 06c5bf202d040c9408f25faa8d146263,
+        type: 3}
+      propertyPath: hpModifier
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7432843566294229145, guid: 06c5bf202d040c9408f25faa8d146263,
+        type: 3}
+      propertyPath: enemyRigidBody
+      value: 
+      objectReference: {fileID: 5980605810676624460}
     m_RemovedComponents:
     - {fileID: 7386856050982031073, guid: 06c5bf202d040c9408f25faa8d146263, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 06c5bf202d040c9408f25faa8d146263, type: 3}
@@ -131115,6 +131125,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4422523206405597822, guid: b1cd5d3f6b12ac44987e490f646461c5,
+        type: 3}
+      propertyPath: enemyRigidBody
+      value: 
+      objectReference: {fileID: 2016218859}
     - target: {fileID: 7394792695786266222, guid: b1cd5d3f6b12ac44987e490f646461c5,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -131227,6 +131242,11 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3689485825386470978, guid: 45632b5ed508a2b43bf89224aae27812,
+        type: 3}
+      propertyPath: enemyRigidBody
+      value: 
+      objectReference: {fileID: 2023941057}
     - target: {fileID: 9128541019082065196, guid: 45632b5ed508a2b43bf89224aae27812,
         type: 3}
       propertyPath: m_Name
