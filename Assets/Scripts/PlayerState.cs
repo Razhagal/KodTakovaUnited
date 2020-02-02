@@ -39,6 +39,8 @@ public class PlayerState
 
     public ReactiveDictionary<RobotPartType, bool> parts = new ReactiveDictionary<RobotPartType, bool>();
 
+    public Subject<RobotPartItem> newPartItemReceived = new Subject<RobotPartItem>();
+
     public PlayerState()
     {
         maxHP.Value = 100;
@@ -46,18 +48,28 @@ public class PlayerState
 
         hp.Value = 100;
         energy.Value = 100;
-
+        
+         parts.Add(RobotPartType.Head, true);
+         parts.Add(RobotPartType.Body, true);
+         parts.Add(RobotPartType.LeftHand, false);
+         parts.Add(RobotPartType.RightHand, false);
+         parts.Add(RobotPartType.LeftLeg, true);
+         parts.Add(RobotPartType.RightLeg, false);
+         /*
         parts.Add(RobotPartType.Head, true);
         parts.Add(RobotPartType.Body, true);
-        parts.Add(RobotPartType.LeftHand, false);
-        parts.Add(RobotPartType.RightHand, false);
+        parts.Add(RobotPartType.LeftHand, true);
+        parts.Add(RobotPartType.RightHand, true);
         parts.Add(RobotPartType.LeftLeg, true);
-        parts.Add(RobotPartType.RightLeg, false);
+        parts.Add(RobotPartType.RightLeg, true);
+
+        canCarryItems.Value = true;*/
     }
 
     public bool ReceivePart(RobotPartItem robotPartItem)
     {
         parts[robotPartItem.type] = true;
+        newPartItemReceived.OnNext(robotPartItem);
 
         Debug.Log("Picked Item : " + Enum.GetName(typeof(RobotPartType), robotPartItem.type));
 
@@ -80,6 +92,7 @@ public class PlayerState
             ShipItemData shipItemData = new ShipItemData(shipPartItem.shipPartType);
             shipItemData.lootTypes = shipPartItem.ItemType;
             shipItemData.sprite = shipPartItem.sprite;
+            shipItemData.cardSprite = shipPartItem.cardSprite;
 
             carriedItem.Value = shipItemData;
             Debug.Log("Picked ship Item : " + Enum.GetName(typeof(ShipPartType), shipPartItem.shipPartType));

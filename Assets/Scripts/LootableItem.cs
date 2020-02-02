@@ -14,4 +14,5 @@ public class LootableItem : MonoBehaviour
     [HideInInspector]
     public Sprite sprite;
     public LootType ItemType;
+    public Sprite cardSprite;
 }

@@ -10,5 +10,6 @@ public class ShipPartItem : LootableItem
     {
         ItemType = LootType.ShipPart;
         sprite = Resources.Load<Sprite>("ShipParts/" + (int)shipPartType);
+        cardSprite = Resources.Load<Sprite>("ShipParts/card-" + (int)shipPartType);
     }
 }

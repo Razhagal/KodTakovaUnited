@@ -6,6 +6,7 @@ public class ItemData
 {
     public LootType lootTypes;
     public Sprite sprite;
+    public Sprite cardSprite;
 }
 
 public class ShipItemData : ItemData

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using TMPro;
 
 public class HudController : MonoBehaviour
 {
+    public ItemNotification itemNotification;
+    [Space]
     public Slider hpSlider;
     public Slider energySlider;
 
@@ -16,11 +19,17 @@ public class HudController : MonoBehaviour
     public BetweenSlider energyBetweenSlider;
     public BetweenScale itemContainerBetweenSlider;
 
+    public GameObject shipObjects;
+    public TextMeshProUGUI txtShipProgress;
+    public BetweenScale betweenScaleShipProgress;
+
     private PlayerState playerState;
+    private ShipState shipState;
 
     public void Start()
     {
         playerState = ServiceLocator.Instance.GetInstanceOfType<PlayerState>();
+        shipState = ServiceLocator.Instance.GetInstanceOfType<ShipState>();
 
         hpSlider.value = (float)playerState.hp.Value / playerState.maxHP.Value;
         energySlider.value = (float)playerState.energy.Value / playerState.maxEnergy.Value;
@@ -45,6 +54,7 @@ public class HudController : MonoBehaviour
             .Subscribe(value =>
             {
                 itemContainer.gameObject.SetActive(value);
+               // shipObjects.gameObject.SetActive(value);
             })
             .AddTo(this);
 
@@ -58,12 +68,64 @@ public class HudController : MonoBehaviour
                 }
                 else
                 {
-                    item.gameObject.SetActive(true);
-                    item.sprite = newItem.sprite;
-                    item.SetNativeSize();
+                    PickedItem(newItem);
                 }
             })
             .AddTo(this);
+
+        playerState.newPartItemReceived
+            .Subscribe(newPart => 
+            {
+                PickedItem(newPart);
+            })
+            .AddTo(this);
+
+        shipState.receivedParts
+            .Subscribe(vall => 
+            {
+                txtShipProgress.text = vall + "/" + shipState.expectedParts.Value;
+                betweenScaleShipProgress.ResetToBeginning();
+                betweenScaleShipProgress.PlayForward();
+            })
+            .AddTo(this);
+            
+    }
+    private void PickedItem(RobotPartItem newItem)
+    {
+        string info = "";
+
+        if ((newItem.type == RobotPartType.LeftHand && playerState.parts[RobotPartType.RightHand]) ||
+            (newItem.type == RobotPartType.RightHand && playerState.parts[RobotPartType.LeftHand]))
+        {
+            info = "You can now carry ship parts to repair your ship";
+        }
+        else if ((newItem.type == RobotPartType.LeftHand && !playerState.parts[RobotPartType.RightHand]) ||
+            (newItem.type == RobotPartType.RightHand && !playerState.parts[RobotPartType.LeftHand]))
+        {
+            info = "You can now attack enemies";
+        }
+        else if (newItem.type == RobotPartType.LeftLeg || newItem.type == RobotPartType.RightLeg)
+        {
+            info = "You can now move faster";
+        }
+
+        itemNotification.PopulateData(info, newItem.cardSprite);
+    }
+
+    private void PickedItem(ShipItemData newItem)
+    {
+        item.gameObject.SetActive(true);
+        item.sprite = newItem.sprite;
+        item.SetNativeSize();
+
+        itemContainerBetweenSlider.ResetToBeginning();
+        itemContainerBetweenSlider.PlayForward();
+
+        if (shipState.receivedParts.Value == 0)
+        {
+            string info = "Bring this to your ship";
+            itemNotification.PopulateData(info, newItem.cardSprite);
+        }
     }
 
     private void UpdateHP(int oldValue, int newValue)
