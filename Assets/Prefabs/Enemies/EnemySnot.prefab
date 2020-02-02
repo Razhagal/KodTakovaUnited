@@ -401,6 +401,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 2538929592432395100}
+  hpModifier: 1
+  healthPoints: 100
+  range: 2
+  AttackDamage: 20
+  enemyRigidBody: {fileID: 0}
+  isMovable: 0
 --- !u!61 &3645116788985212986
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -414,7 +420,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.20184785, y: -0.12182206}
+  m_Offset: {x: 0.17307091, y: -0.09585774}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -425,5 +431,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5490867, y: 0.5706147}
+  m_Size: {x: 0.7805395, y: 0.7481947}
   m_EdgeRadius: 0

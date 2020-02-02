@@ -15,7 +15,11 @@ public enum PlayerCompletenesState
 public class PlayerController : MonoBehaviour
 {
     public float MoveSpeed = 1;
+    public float AttackRange = 1f;
+    public float AttackCooldown = 0.7f;
+    public float AttackDamage = 40f;
 
+    public GameObject attackFx;
     public GameObject[] completedStateObjects;
     public Animator[] completedStateAnimators;
 
@@ -28,11 +32,17 @@ public class PlayerController : MonoBehaviour
     private PlayerState playerState;
     private PlayerCompletenesState completenesIndex;
 
+    private Vector2 lastDirection = Vector2.left;
+    private bool canAttack = false;
+    private float attackAvailableAfter = 0f;
+
     private void Start()
     {
         rBody = GetComponent<Rigidbody2D>();
         playerState = ServiceLocator.Instance.GetInstanceOfType<PlayerState>();
         //completenesIndex = PlayerCompletenesState.TwoLegsTwoArms;
+        //completenesIndex = PlayerCompletenesState.TwoLegsTwoArms;
+        canAttack = true;
 
         for (int i = 0; i < completedStateObjects.Length; i++)
         {
@@ -51,6 +61,19 @@ public class PlayerController : MonoBehaviour
         UpdateAnimation();
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0) && canAttack && attackAvailableAfter <= 0f)
+        {
+            PerformAttack();
+        }
+
+        if (attackAvailableAfter > 0f)
+        {
+            attackAvailableAfter -= Time.fixedDeltaTime;
+        }
+    }
+
     private void FixedUpdate()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -58,6 +81,11 @@ public class PlayerController : MonoBehaviour
 
         inputVector = new Vector2(horizontalInput, verticalInput);
         inputVector = Vector2.ClampMagnitude(inputVector, 1);
+
+        if (inputVector.x != 0 || inputVector.y != 0)
+        {
+            lastDirection = inputVector;
+        }
 
         movement = inputVector * MoveSpeed;
 
@@ -67,11 +95,6 @@ public class PlayerController : MonoBehaviour
         SetDirection(inputVector);
         UpdateAnimation(inputVector);
         rBody.MovePosition(newPos);
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            PerformAttack();
-        }
     }
 
     private void SetDirection(Vector2 dir)
@@ -101,6 +124,29 @@ public class PlayerController : MonoBehaviour
     private void PerformAttack()
     {
         anim.SetTrigger("Attack");
+        attackAvailableAfter = AttackCooldown;
+
+        StartCoroutine(InstantiateAttackFxObject(0.2f));
+
+        Ray2D ray = new Ray2D(transform.position, lastDirection);
+        //Debug.DrawRay(ray.origin, ray.direction * AttackRange, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, ray.direction * AttackRange, distance: AttackRange);
+        if (hit.collider != null)
+        {
+            if (hit.collider.gameObject.tag.Equals("Enemy"))
+            {
+                hit.collider.gameObject.GetComponent<Enemy>().RemoveHealthPoints(AttackDamage);
+            }
+        }
+    }
+
+    private IEnumerator InstantiateAttackFxObject(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        Vector3 spawnPos = transform.position + new Vector3(lastDirection.x, lastDirection.y, 0f);
+        Vector3 direction = spawnPos - transform.position;
+        GameObject.Instantiate(attackFx, spawnPos, Quaternion.LookRotation(Vector3.forward, direction)).SetActive(true);
     }
 
     private void UpdatePlayerCompleteness(PlayerCompletenesState newCompleteness)
@@ -172,6 +218,8 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateAnimation()
     {
+        MoveSpeed = 7;
+
         if (completenesIndex != PlayerCompletenesState.TwoLegsTwoArms)
         {
             if (playerState.parts[RobotPartType.LeftHand] &&
@@ -180,6 +228,7 @@ public class PlayerController : MonoBehaviour
                 playerState.parts[RobotPartType.RightLeg])
             {
                 UpdatePlayerCompleteness(PlayerCompletenesState.TwoLegsTwoArms);
+                canAttack = true;
             }
             else if ((playerState.parts[RobotPartType.LeftHand] ||
                 playerState.parts[RobotPartType.RightHand]) &&
@@ -187,6 +236,7 @@ public class PlayerController : MonoBehaviour
                 playerState.parts[RobotPartType.RightLeg])
             {
                 UpdatePlayerCompleteness(PlayerCompletenesState.TwoLegsOneArm);
+                canAttack = true;
             }
             else if (playerState.parts[RobotPartType.LeftHand] &&
                     playerState.parts[RobotPartType.RightHand] &&
@@ -194,6 +244,7 @@ public class PlayerController : MonoBehaviour
                     playerState.parts[RobotPartType.RightLeg]))
             {
                 UpdatePlayerCompleteness(PlayerCompletenesState.OneLegTwoArms);
+                canAttack = true;
             }
             else if ((playerState.parts[RobotPartType.LeftHand] &&
                     playerState.parts[RobotPartType.RightLeg]) ||
@@ -205,17 +256,26 @@ public class PlayerController : MonoBehaviour
                     playerState.parts[RobotPartType.RightLeg]))
             {
                 UpdatePlayerCompleteness(PlayerCompletenesState.OneLegOneArm);
+                canAttack = true;
             }
             else if (playerState.parts[RobotPartType.RightLeg] &&
                      playerState.parts[RobotPartType.LeftLeg])
             {
                 UpdatePlayerCompleteness(PlayerCompletenesState.TwoLegs);
+                canAttack = false;
             }
             else if (playerState.parts[RobotPartType.RightLeg] || playerState.parts[RobotPartType.LeftLeg])
             {
                 UpdatePlayerCompleteness(PlayerCompletenesState.OneLeg);
+                canAttack = false;
+                MoveSpeed = 1;
             }
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        playerState.hp.Value -= damage;
     }
 
     /*public enum PlayerCompletenesState

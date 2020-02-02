@@ -1203,7 +1203,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 1
-  anim: {fileID: 6641437414512773882}
+  attackFx: {fileID: 5861712371742160452, guid: 9c494240cd153154f94b2e6215c5bb1c,
+    type: 3}
   completedStateObjects:
   - {fileID: 3242693757915565967}
   - {fileID: 3022835396009650312}
@@ -1211,6 +1212,7 @@ MonoBehaviour:
   - {fileID: 634557431204919004}
   - {fileID: 3348146318926344133}
   - {fileID: 7853215176710846528}
+  - {fileID: 5861712371742160452, guid: 9c494240cd153154f94b2e6215c5bb1c, type: 3}
   completedStateAnimators:
   - {fileID: 1097222780998125856}
   - {fileID: 3024754595370315137}

@@ -3,18 +3,22 @@
 public class Enemy : MonoBehaviour
 {
     public Animator anim;
+
     public int hpModifier = 1;
-    [HideInInspector]
-    public int healthPoints = 100;
+    [HideInInspector] public int healthPoints = 100;
+    public float range = 2f;
+    public int AttackDamage = 20;
+
     public Rigidbody2D enemyRigidBody;
     public bool isMovable = false;
-    public float range = 2f;
     private bool isHitByPlayer = false;
     private Transform target = null;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag.Equals("Player"))
         {
+            collision.gameObject.GetComponent<PlayerController>().TakeDamage(AttackDamage);
             target = collision.transform;
             anim.SetTrigger("Attack");
             //RemoveHealthPoints(0.5f);
@@ -32,7 +36,6 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.tag.Equals("Player"))
         {
             target = null;
-            anim.SetTrigger("Idle");
 
             if (isMovable && enemyRigidBody != null)
             {
@@ -50,8 +53,6 @@ public class Enemy : MonoBehaviour
         {
             healthPoints = healthPoints - (int)(hpModifier * playerDamage);
         }
-
-        //Debug.Log(healthPoints);
 
         if (healthPoints <= 0)
         {
