@@ -3,16 +3,13 @@
 public class Enemy : MonoBehaviour
 {
     public Animator anim;
-    public int minusHealthPoints = 10;
+    public int hpModifier = 1;
     [HideInInspector]
     public int healthPoints = 100;
-    //public float moveSpeed;
-    //public float moveRotate;
-    //private Coroutine moveEnemyCourotine;
+    public Rigidbody2D enemyRigidBody;
+    public bool isMovable = false;
     public float range = 2f;
-    
-
-
+    private bool isHitByPlayer = false;
     private Transform target = null;
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -20,6 +17,13 @@ public class Enemy : MonoBehaviour
         {
             target = collision.transform;
             anim.SetTrigger("Attack");
+            //RemoveHealthPoints(0.5f);
+            if (isMovable && enemyRigidBody != null)
+            {
+                enemyRigidBody.isKinematic = true;
+                enemyRigidBody.velocity = Vector3.zero;
+                isHitByPlayer = true;
+            }
         }
     }
 
@@ -29,12 +33,34 @@ public class Enemy : MonoBehaviour
         {
             target = null;
             anim.SetTrigger("Idle");
+
+            if (isMovable && enemyRigidBody != null)
+            {
+                if (enemyRigidBody.isKinematic == true)
+                {
+                    enemyRigidBody.isKinematic = false;
+                }
+            }
         }
     }
 
-    private void RemoveHealthPoints()
+    public void RemoveHealthPoints(float playerDamage)
     {
-        healthPoints = healthPoints - minusHealthPoints;
+        if (healthPoints > 0)
+        {
+            healthPoints = healthPoints - (int)(hpModifier * playerDamage);
+        }
+
+        //Debug.Log(healthPoints);
+
+        if (healthPoints <= 0)
+        {
+            Die();
+        }
     }
 
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
 }
