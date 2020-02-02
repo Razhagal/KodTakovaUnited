@@ -827,12 +827,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 244957242}
   m_CullTransparentMesh: 0
---- !u!50 &358178211 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 5980605810676624460, guid: 0e30c09b03321c14b89f608bc693504b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1829904519}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &559800902
 GameObject:
   m_ObjectHideFlags: 0
@@ -2086,12 +2080,6 @@ MonoBehaviour:
       m_Calls: []
   From: 0
   To: 1
---- !u!50 &1518590713 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 2016218859, guid: 0e30c09b03321c14b89f608bc693504b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1829904519}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1519805042
 GameObject:
   m_ObjectHideFlags: 0
@@ -2415,12 +2403,6 @@ Sprite:
   m_PhysicsShape: []
   m_Bones: []
   m_SpriteID: 
---- !u!50 &1727215423 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 2023941057, guid: 0e30c09b03321c14b89f608bc693504b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1829904519}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1800548707
 GameObject:
   m_ObjectHideFlags: 0
@@ -2690,16 +2672,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: MapPrefab
       objectReference: {fileID: 0}
-    - target: {fileID: 4933495986905065408, guid: 0e30c09b03321c14b89f608bc693504b,
-        type: 3}
-      propertyPath: enemyRigidBody
-      value: 
-      objectReference: {fileID: 1518590713}
-    - target: {fileID: 5339886889859776349, guid: 0e30c09b03321c14b89f608bc693504b,
-        type: 3}
-      propertyPath: enemyRigidBody
-      value: 
-      objectReference: {fileID: 1727215423}
     - target: {fileID: 8730431401519195211, guid: 0e30c09b03321c14b89f608bc693504b,
         type: 3}
       propertyPath: m_TileAssetArray.Array.data[2].m_Data
@@ -2720,11 +2692,6 @@ PrefabInstance:
       propertyPath: m_TileSpriteArray.Array.data[6].m_Data
       value: 
       objectReference: {fileID: 223764691}
-    - target: {fileID: 9015493468042993531, guid: 0e30c09b03321c14b89f608bc693504b,
-        type: 3}
-      propertyPath: enemyRigidBody
-      value: 
-      objectReference: {fileID: 358178211}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e30c09b03321c14b89f608bc693504b, type: 3}
 --- !u!1 &1934545637
