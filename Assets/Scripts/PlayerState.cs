@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using System;
+using UnityEngine.SceneManagement;
 
 public enum RobotPartType
 {
@@ -46,8 +47,25 @@ public class PlayerState
         maxHP.Value = 100;
         maxEnergy.Value = 100;
 
-        hp.Value = 100;
-        energy.Value = 100;
+        hp.Value = 70;
+        energy.Value = 20;
+
+        hp.Subscribe(value => 
+        {
+            if (value <= 0)
+            {
+                SceneManager.LoadScene("LooseGame");
+            }
+        });
+
+        energy.Subscribe(value =>
+        {
+            if (value <= 0)
+            {
+                SceneManager.LoadScene("LooseGame");
+            }
+        });
+
         
          parts.Add(RobotPartType.Head, true);
          parts.Add(RobotPartType.Body, true);
@@ -103,5 +121,29 @@ public class PlayerState
             Debug.Log("Cannot pick up item");
             return false;
         }
+    }
+
+    internal void GiveEnergy(EnergyItem energyItem)
+    {
+        int newEnergy = energy.Value + energyItem.energy;
+
+        if (newEnergy > maxEnergy.Value)
+        {
+            newEnergy = maxEnergy.Value;
+        }
+
+        energy.Value = newEnergy;
+    }
+
+    internal void GiveHP(HPItem hPItem)
+    {
+        int newHP = hp.Value + hPItem.hp;
+
+        if (newHP > maxHP.Value)
+        {
+            newHP = maxHP.Value;
+        }
+
+        hp.Value = newHP;
     }
 }

@@ -7,6 +7,8 @@ TagManager:
   - Lootable
   - Enemy
   - Ship
+  - Energy
+  - HP
   layers:
   - Default
   - TransparentFX
@@ -46,6 +48,9 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 3257501583
+    locked: 0
+  - name: Effects
+    uniqueID: 3777729695
     locked: 0
   - name: ColliderDebug
     uniqueID: 3503872115

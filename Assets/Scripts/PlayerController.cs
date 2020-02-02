@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     {
         rBody = GetComponent<Rigidbody2D>();
         playerState = ServiceLocator.Instance.GetInstanceOfType<PlayerState>();
-        completenesIndex = PlayerCompletenesState.TwoLegsTwoArms;
+        //completenesIndex = PlayerCompletenesState.TwoLegsTwoArms;
 
         for (int i = 0; i < completedStateObjects.Length; i++)
         {
@@ -139,6 +139,16 @@ public class PlayerController : MonoBehaviour
                     {
                         Destroy(collision.gameObject);
                     }
+                }
+                else if (lootable.ItemType == LootType.EnergyItem)
+                {
+                    playerState.GiveEnergy((lootable as EnergyItem));
+                    Destroy(collision.gameObject);
+                }
+                else if (lootable.ItemType == LootType.HpItem)
+                {
+                    playerState.GiveHP((lootable as HPItem));
+                    Destroy(collision.gameObject);
                 }
             }
 

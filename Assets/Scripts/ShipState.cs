@@ -10,7 +10,7 @@ public class ShipState
 
     public ShipState()
     {
-        expectedParts.Value = 3;
+        expectedParts.Value = 2;
     }
 
     public bool ReceiveItem(ShipItemData shipItemData)

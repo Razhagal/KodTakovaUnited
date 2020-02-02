@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class HudController : MonoBehaviour
 {
@@ -46,7 +47,7 @@ public class HudController : MonoBehaviour
             .Pairwise()
             .Subscribe(values =>
             {
-                UpdateHP(values.Previous, values.Current);
+                UpdateEnergy(values.Previous, values.Current);
             })
             .AddTo(this);
 
@@ -86,10 +87,32 @@ public class HudController : MonoBehaviour
                 txtShipProgress.text = vall + "/" + shipState.expectedParts.Value;
                 betweenScaleShipProgress.ResetToBeginning();
                 betweenScaleShipProgress.PlayForward();
+
+                if (shipState.receivedParts.Value == shipState.expectedParts.Value)
+                {
+                    SceneManager.LoadScene("EndGame");
+                }
             })
             .AddTo(this);
-            
+
+        StartCoroutine(LooseEnergy());
+        //test
+       // shipState.expectedParts.Value = 1;
     }
+
+    private IEnumerator LooseEnergy()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(10f);
+            playerState.energy.Value -= 10;
+
+            // test
+           //ShipState x = ServiceLocator.Instance.GetInstanceOfType<ShipState>();
+           //x.receivedParts.Value = x.expectedParts.Value;
+        }
+    }
+
     private void PickedItem(RobotPartItem newItem)
     {
         string info = "";

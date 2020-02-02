@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class FogOfWar : MonoBehaviour
 {
@@ -21,6 +22,23 @@ public class FogOfWar : MonoBehaviour
     void Start()
     {
         Initialize();
+
+        PlayerState playerState = ServiceLocator.Instance.GetInstanceOfType<PlayerState>();
+        playerState.energy
+            .Subscribe(_ => UpdateRange(playerState))
+            .AddTo(this);
+
+        UpdateRange(playerState);
+    }
+
+    private void UpdateRange(PlayerState playerState)
+    {
+        float minRadius = 2;
+        float maxRadius = 7;
+        float progress = (float)playerState.energy.Value / playerState.maxEnergy.Value;
+        float currentRadius = Mathf.Lerp(minRadius, maxRadius, progress);
+
+        m_radius = currentRadius;
     }
 
     void Update()
