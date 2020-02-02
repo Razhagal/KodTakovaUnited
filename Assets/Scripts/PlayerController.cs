@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     {
         rBody = GetComponent<Rigidbody2D>();
         playerState = ServiceLocator.Instance.GetInstanceOfType<PlayerState>();
-        //completenesIndex = PlayerCompletenesState.TwoLegsTwoArms;
+        completenesIndex = PlayerCompletenesState.TwoLegsTwoArms;
 
         for (int i = 0; i < completedStateObjects.Length; i++)
         {
