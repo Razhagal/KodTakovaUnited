@@ -29,7 +29,7 @@ public class MovingEnemy : Enemy
     {
         //if the changeTime was reached, calculate a new movement vector
         if (Time.time - latestDirectionChangeTime > directionChangeTime)
-        {
+        { 
             latestDirectionChangeTime = Time.time;
             CalcuateNewMovementVector();
         }

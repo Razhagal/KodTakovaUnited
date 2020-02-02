@@ -6,13 +6,13 @@ public class Enemy : MonoBehaviour
     public int minusHealthPoints = 10;
     [HideInInspector]
     public int healthPoints = 100;
+    public Rigidbody2D enemyRigidBody;
+    public bool isMovable = false;
     //public float moveSpeed;
     //public float moveRotate;
     //private Coroutine moveEnemyCourotine;
     public float range = 2f;
-    
-
-
+    private bool isHitByPlayer = false;
     private Transform target = null;
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -20,6 +20,13 @@ public class Enemy : MonoBehaviour
         {
             target = collision.transform;
             anim.SetTrigger("Attack");
+
+            if (isMovable && enemyRigidBody != null)
+            {
+                enemyRigidBody.isKinematic = true;
+                enemyRigidBody.velocity = Vector3.zero;
+                isHitByPlayer = true;
+            }
         }
     }
 
@@ -29,6 +36,14 @@ public class Enemy : MonoBehaviour
         {
             target = null;
             anim.SetTrigger("Idle");
+
+            if (isMovable && enemyRigidBody != null)
+            {
+                if (enemyRigidBody.isKinematic == true)
+                {
+                    enemyRigidBody.isKinematic = false;
+                }
+            }
         }
     }
 
